@@ -29,7 +29,8 @@ jobs:
           "rights_status":"cleared"
           }
           '@ | Set-Content manifest.json -Encoding utf8
-          production-metadata-linter manifest.json
+          $linter = Join-Path $env:USERPROFILE 'scoop\shims\production-metadata-linter.exe'
+          & $linter manifest.json
       - name: Reject an unreleasable manifest
         shell: pwsh
         run: |
@@ -41,5 +42,6 @@ jobs:
           "rights_status":"unknown"
           }
           '@ | Set-Content invalid.json -Encoding utf8
-          production-metadata-linter invalid.json
+          $linter = Join-Path $env:USERPROFILE 'scoop\shims\production-metadata-linter.exe'
+          & $linter invalid.json
           if ($LASTEXITCODE -ne 1) { throw "Expected exit code 1 for unknown rights" }
