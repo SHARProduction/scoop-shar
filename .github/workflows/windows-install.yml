@@ -15,8 +15,9 @@ jobs:
       - name: Add local SHAR bucket and install linter
         shell: pwsh
         run: |
-          scoop bucket add shar "$env:GITHUB_WORKSPACE"
-          scoop install production-metadata-linter
+          $scoop = Join-Path $env:USERPROFILE 'scoop\shims\scoop.ps1'
+          & $scoop bucket add shar "$env:GITHUB_WORKSPACE"
+          & $scoop install production-metadata-linter
       - name: Validate a releasable manifest
         shell: pwsh
         run: |
