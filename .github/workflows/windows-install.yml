@@ -34,6 +34,7 @@ jobs:
       - name: Reject an unreleasable manifest
         shell: pwsh
         run: |
+          $ErrorActionPreference = 'Continue'
           @'
           {
           "title":"Scoop CI fixture",
@@ -45,3 +46,4 @@ jobs:
           $linter = Join-Path $env:USERPROFILE 'scoop\shims\production-metadata-linter.exe'
           & $linter invalid.json
           if ($LASTEXITCODE -ne 1) { throw "Expected exit code 1 for unknown rights" }
+          exit 0
