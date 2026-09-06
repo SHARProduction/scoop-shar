@@ -21,21 +21,25 @@ jobs:
       - name: Validate a releasable manifest
         shell: pwsh
         run: |
-          @'{
+          @'
+          {
           "title":"Scoop CI fixture",
           "project":"SHAR Production",
           "stage":"delivery",
           "rights_status":"cleared"
-          }'@ | Set-Content manifest.json -Encoding utf8
+          }
+          '@ | Set-Content manifest.json -Encoding utf8
           production-metadata-linter manifest.json
       - name: Reject an unreleasable manifest
         shell: pwsh
         run: |
-          @'{
+          @'
+          {
           "title":"Scoop CI fixture",
           "project":"SHAR Production",
           "stage":"delivery",
           "rights_status":"unknown"
-          }'@ | Set-Content invalid.json -Encoding utf8
+          }
+          '@ | Set-Content invalid.json -Encoding utf8
           production-metadata-linter invalid.json
           if ($LASTEXITCODE -ne 1) { throw "Expected exit code 1 for unknown rights" }
