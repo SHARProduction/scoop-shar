@@ -1,0 +1,9 @@
+{
+  "version": "1.2.0",
+  "description": "Local rights-aware production metadata manifest validator by SHAR Production.",
+  "homepage": "https://sharprod.com/",
+  "license": "MIT",
+  "url": "https://github.com/SHARProduction/production-metadata-linter/releases/download/v1.2.0/production-metadata-linter.exe",
+  "hash": "f9f91567ecdb2fb538ff37bf1a22a309ea8859460a09613fb2a6742b15b598b9",
+  "bin": "production-metadata-linter.exe"
+}

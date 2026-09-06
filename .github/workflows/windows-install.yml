@@ -1,0 +1,40 @@
+name: Verify Scoop installation
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  install-and-run:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Scoop
+        shell: pwsh
+        run: irm get.scoop.sh | iex
+      - name: Add local SHAR bucket and install linter
+        shell: pwsh
+        run: |
+          scoop bucket add shar "$env:GITHUB_WORKSPACE"
+          scoop install production-metadata-linter
+      - name: Validate a releasable manifest
+        shell: pwsh
+        run: |
+          @'{
+          "title":"Scoop CI fixture",
+          "project":"SHAR Production",
+          "stage":"delivery",
+          "rights_status":"cleared"
+          }'@ | Set-Content manifest.json -Encoding utf8
+          production-metadata-linter manifest.json
+      - name: Reject an unreleasable manifest
+        shell: pwsh
+        run: |
+          @'{
+          "title":"Scoop CI fixture",
+          "project":"SHAR Production",
+          "stage":"delivery",
+          "rights_status":"unknown"
+          }'@ | Set-Content invalid.json -Encoding utf8
+          production-metadata-linter invalid.json
+          if ($LASTEXITCODE -ne 1) { throw "Expected exit code 1 for unknown rights" }
